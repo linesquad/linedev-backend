@@ -9,6 +9,7 @@ export const authSchema = new mongoose.Schema({
     enum: ["client", "junior", "middle", "senior"],
     default: "client",
   },
+  refreshToken: { type: String, default: null },
 });
 
 const Auth = mongoose.model("Auth", authSchema);
