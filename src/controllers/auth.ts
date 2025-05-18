@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Auth from "../model/Auth";
+import Auth from "../models/Auth";
 import bcrypt from "bcryptjs";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 import jwt from "jsonwebtoken";
