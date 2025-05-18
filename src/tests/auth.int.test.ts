@@ -15,6 +15,7 @@ afterAll(async () => {
 });
 
 describe("Auth API", () => {
+
   it("should register a new account", async () => {
     const response = await request(app).post("/auth/register").send({
       name: "test",
@@ -24,6 +25,23 @@ describe("Auth API", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.body.message).toBe("Account created successfully");
+    expect(response.body.message).toBe("Client created successfully");
+  });
+
+  it("should login a client", async () => {
+    const response = await request(app).post("/auth/login").send({
+      email: "test@test.com",
+      password: "testpassword",
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Login successful");
+  });
+
+  it("should logout a client", async () => {
+    const response = await request(app).post("/auth/logout");
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Logout successful");
   });
 });
