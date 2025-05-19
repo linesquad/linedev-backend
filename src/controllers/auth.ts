@@ -91,6 +91,24 @@ export const logout = async (_req: Request, res: Response) => {
   res.status(200).json({ message: "Logout successful" });
 };
 
+export const getMyProfile = async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  const user = await Auth.findOne({ email });
+
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  res.status(200).json({
+    message: "Your profile",
+    user: {
+      id: user._id,
+    },
+  });
+};
+
 export const refreshToken = async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
