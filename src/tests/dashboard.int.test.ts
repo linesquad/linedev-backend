@@ -10,7 +10,6 @@ let seniorToken: string;
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!);
   
-  // Create test accounts for each role
   const juniorAccount = await createTestAccount("junior");
   juniorToken = juniorAccount.accessToken;
   
