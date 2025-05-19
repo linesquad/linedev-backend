@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { JWTPayload } from "../types";
 
-export const requireRole = (role: string) => {
+export const requireRole = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
@@ -15,8 +15,8 @@ export const requireRole = (role: string) => {
         accessToken,
         process.env.ACCESS_TOKEN_SECRET!
       ) as JWTPayload;
-      if (decoded.role !== role) {
-        res.status(403).json({ message: `Forbidden: ${role} role required` });
+      if (!roles.includes(decoded.role)) {
+        res.status(403).json({ message: `Forbidden: ${decoded.role} role required` });
         return;
       }
       req.user = decoded.id;
