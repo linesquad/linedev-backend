@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
-interface JWTPayload {
-  id: string;
-  role: string;
-}
+import { JWTPayload } from "../types";
 
 export const requireRole = (role: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -23,7 +19,7 @@ export const requireRole = (role: string) => {
         res.status(403).json({ message: `Forbidden: ${role} role required` });
         return;
       }
-      (req as any).user = decoded.id;
+      req.user = decoded.id;
       next();
     } catch (error) {
       res.status(401).json({ message: "Unauthorized" });

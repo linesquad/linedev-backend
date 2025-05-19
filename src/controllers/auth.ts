@@ -3,7 +3,7 @@ import Auth from "../models/Auth";
 import bcrypt from "bcryptjs";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 import jwt from "jsonwebtoken";
-
+import { JWTPayload } from "../types";
 export const register = async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;
 
@@ -99,9 +99,12 @@ export const refreshToken = async (req: Request, res: Response) => {
     return;
   }
 
-  let payload: any;
+  let payload;
   try {
-    payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+    payload = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!
+    ) as JWTPayload;
   } catch (error) {
     res.status(401).json({
       message: "Unauthorized",
