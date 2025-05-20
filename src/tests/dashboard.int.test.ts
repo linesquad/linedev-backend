@@ -32,7 +32,7 @@ describe("Dashboard API", () => {
       .set("Cookie", `accessToken=${juniorToken}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Hello junior");
+    expect(response.body.message).toBe("Junior Dashboard");
   });
 
   it("should get middle dashboard", async () => {
@@ -41,7 +41,7 @@ describe("Dashboard API", () => {
       .set("Cookie", `accessToken=${middleToken}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Hello middle");
+    expect(response.body.message).toBe("Middle Dashboard");
   });
 
   it("should get senior dashboard", async () => {
@@ -50,6 +50,6 @@ describe("Dashboard API", () => {
       .set("Cookie", `accessToken=${seniorToken}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Hello senior");
+    expect(response.body.message).toBe("Senior Dashboard");
   });
 });

@@ -26,18 +26,3 @@ export const me = async (req: Request, res: Response) => {
     },
   });
 };
-export const getMyProfile = async (req: Request, res: Response) => {
-  const userId = req.user;
-
-  if (!userId) {
-    return null;
-  }
-
-  const user = await Auth.findById(userId);
-
-  if (!user) {
-    return null;
-  }
-
-  return user;
-};
