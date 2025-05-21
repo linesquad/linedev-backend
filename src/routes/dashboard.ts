@@ -4,13 +4,13 @@ import {
   middleDashboard,
   seniorDashboard,
 } from "../controllers/dashboard";
-import { requireRole } from "../middlewares/auth";
+import { requireAuth, requireRole } from "../middlewares/auth";
 
 const router = Router();
 
-router.get("/junior", requireRole("junior"), juniorDashboard);
-router.get("/middle", requireRole("middle"), middleDashboard);
-router.get("/senior", requireRole("senior"), seniorDashboard);
+router.get("/junior", requireAuth, requireRole("junior"), juniorDashboard);
+router.get("/middle", requireAuth, requireRole("middle"), middleDashboard);
+router.get("/senior", requireAuth, requireRole("senior"), seniorDashboard);
 
 export default router;
 
@@ -39,7 +39,7 @@ export default router;
  *         description: Unauthorized - User not authenticated
  *       403:
  *         description: Forbidden - User does not have required role
- * 
+ *
  * /dashboard/middle:
  *   get:
  *     summary: Get middle dashboard
@@ -63,7 +63,7 @@ export default router;
  *         description: Unauthorized - User not authenticated
  *       403:
  *         description: Forbidden - User does not have required role
- * 
+ *
  * /dashboard/senior:
  *   get:
  *     summary: Get senior dashboard

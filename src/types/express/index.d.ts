@@ -1,5 +1,3 @@
-import { Request } from "express";
-
 declare global {
   namespace Express {
     interface Request {
@@ -10,5 +8,4 @@ declare global {
 
 export interface JWTPayload {
   id: string;
-  role: string;
 }

@@ -3,7 +3,7 @@ import Auth from "../models/Auth";
 import bcrypt from "bcryptjs";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 import jwt from "jsonwebtoken";
-import { JWTPayload } from "../types";
+import { JWTPayload } from "../types/express";
 
 export const register = async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;

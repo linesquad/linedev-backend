@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { JWTPayload } from "../types";
+import Auth from "../models/Auth";
+import { JWTPayload } from "../types/express";
 
 export const requireRole = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -15,13 +16,17 @@ export const requireRole = (...roles: string[]) => {
         accessToken,
         process.env.ACCESS_TOKEN_SECRET!
       ) as JWTPayload;
-      if (!roles.includes(decoded.role)) {
-        res
-          .status(403)
-          .json({ message: `Forbidden: ${decoded.role} role required` });
+      const user = await Auth.findById(decoded.id);
+      if (!user) {
+        res.status(401).json({ message: "Unauthorized" });
         return;
       }
-      req.user = decoded.id;
+      if (!roles.includes(user.role)) {
+        res
+          .status(403)
+          .json({ message: `Forbidden: ${user.role} role required` });
+        return;
+      }
       next();
     } catch (error) {
       res.status(401).json({ message: "Unauthorized" });
@@ -46,9 +51,10 @@ export const requireAuth = async (
       accessToken,
       process.env.ACCESS_TOKEN_SECRET!
     ) as JWTPayload;
-    (req as any).user = decoded.id;
+    req.user = decoded.id;
     next();
   } catch (error) {
     res.status(401).json({ message: "Unauthorized" });
+    return;
   }
 };
