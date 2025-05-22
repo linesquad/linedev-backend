@@ -24,7 +24,7 @@ export const requireRole = (...roles: string[]) => {
       if (!roles.includes(user.role)) {
         res
           .status(403)
-          .json({ message: `Forbidden: ${user.role} role required` });
+          .json({ message: `Forbidden: ${user.role} is not allowed to access this resource` });
         return;
       }
       next();
