@@ -20,7 +20,7 @@ export default router;
 
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -57,7 +57,7 @@ export default router;
 
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Login a user
  *     tags: [Auth]
@@ -86,7 +86,7 @@ export default router;
 
 /**
  * @swagger
- * /auth/logout:
+ * /api/auth/logout:
  *   post:
  *     summary: Logout a user
  *     tags: [Auth]
@@ -97,7 +97,7 @@ export default router;
 
 /**
  * @swagger
- * /auth/refresh-token:
+ * /api/auth/refresh-token:
  *   post:
  *     summary: Refresh authentication token
  *     tags: [Auth]

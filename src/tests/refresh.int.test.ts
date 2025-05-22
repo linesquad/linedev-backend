@@ -37,18 +37,18 @@ afterAll(async () => {
 describe("Refresh Token", () => {
   it("should refresh the token", async () => {
     const res = await request(app)
-      .post("/auth/refresh-token")
+      .post("/api/auth/refresh-token")
       .set("Cookie", `refreshToken=${refreshToken}`)
       .expect(200);
     expect(res.body.message).toBe("Token refreshed");
   });
   it("should return 401 if no refresh token is provided", async () => {
-    const res = await request(app).post("/auth/refresh-token").expect(401);
+    const res = await request(app).post("/api/auth/refresh-token").expect(401);
     expect(res.body.message).toBe("Unauthorized");
   });
   it("should return 401 if refresh token is invalid", async () => {
     const res = await request(app)
-      .post("/auth/refresh-token")
+      .post("/api/auth/refresh-token")
       .set("Cookie", `refreshToken=invalid`)
       .expect(401);
     expect(res.body.message).toBe("Unauthorized");
@@ -62,7 +62,7 @@ describe("Refresh Token", () => {
       }
     );
     const res = await request(app)
-      .post("/auth/refresh-token")
+      .post("/api/auth/refresh-token")
       .set("Cookie", `refreshToken=${fakeToken}`)
       .expect(401);
     expect(res.body.message).toBe("Unauthorized");

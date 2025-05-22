@@ -16,7 +16,7 @@ export default router;
 
 /**
  * @swagger
- * /dashboard/junior:
+ * /api/dashboard/junior:
  *   get:
  *     summary: Get junior dashboard
  *     description: Returns the junior dashboard information for authenticated junior users
@@ -40,7 +40,7 @@ export default router;
  *       403:
  *         description: Forbidden - User does not have required role
  *
- * /dashboard/middle:
+ * /api/dashboard/middle:
  *   get:
  *     summary: Get middle dashboard
  *     description: Returns the middle dashboard information for authenticated middle users
@@ -64,7 +64,7 @@ export default router;
  *       403:
  *         description: Forbidden - User does not have required role
  *
- * /dashboard/senior:
+ * /api/dashboard/senior:
  *   get:
  *     summary: Get senior dashboard
  *     description: Returns the senior dashboard information for authenticated senior users

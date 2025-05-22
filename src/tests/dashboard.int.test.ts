@@ -28,7 +28,7 @@ afterAll(async () => {
 describe("Dashboard API", () => {
   it("should get junior dashboard", async () => {
     const response = await request(app)
-      .get("/dashboard/junior")
+      .get("/api/dashboard/junior")
       .set("Cookie", `accessToken=${juniorToken}`);
 
     expect(response.status).toBe(200);
@@ -37,7 +37,7 @@ describe("Dashboard API", () => {
 
   it("should get middle dashboard", async () => {
     const response = await request(app)
-      .get("/dashboard/middle")
+      .get("/api/dashboard/middle")
       .set("Cookie", `accessToken=${middleToken}`);
 
     expect(response.status).toBe(200);
@@ -46,7 +46,7 @@ describe("Dashboard API", () => {
 
   it("should get senior dashboard", async () => {
     const response = await request(app)
-      .get("/dashboard/senior")
+      .get("/api/dashboard/senior")
       .set("Cookie", `accessToken=${seniorToken}`);
 
     expect(response.status).toBe(200);

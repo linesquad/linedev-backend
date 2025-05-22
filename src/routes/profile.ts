@@ -10,7 +10,7 @@ export default router;
 
 /**
  * @swagger
- * /profile:
+ * /api/profile:
  *   get:
  *     summary: Get user profile
  *     description: Returns the profile information of the authenticated user

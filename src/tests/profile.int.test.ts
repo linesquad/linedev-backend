@@ -18,7 +18,7 @@ afterAll(async () => {
 describe("Profile API", () => {
   it("should return the profile of the user", async () => {
     const response = await request(app)
-      .get("/profile")
+      .get("/api/profile")
       .set("Cookie", `accessToken=${accessToken}`);
 
     expect(response.status).toBe(200);

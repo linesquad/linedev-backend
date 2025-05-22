@@ -17,7 +17,7 @@ afterAll(async () => {
 describe("Auth API", () => {
 
   it("should register a new account", async () => {
-    const response = await request(app).post("/auth/register").send({
+    const response = await request(app).post("/api/auth/register").send({
       name: "test",
       email: "test@test.com",
       password: "testpassword",
@@ -29,7 +29,7 @@ describe("Auth API", () => {
   });
 
   it("should login a client", async () => {
-    const response = await request(app).post("/auth/login").send({
+    const response = await request(app).post("/api/auth/login").send({
       email: "test@test.com",
       password: "testpassword",
     });
@@ -39,7 +39,7 @@ describe("Auth API", () => {
   });
 
   it("should logout a client", async () => {
-    const response = await request(app).post("/auth/logout");
+    const response = await request(app).post("/api/auth/logout");
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Logout successful");
