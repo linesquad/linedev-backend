@@ -6,7 +6,6 @@ export const registerClientForm = async (req: Request, res: Response) => {
 
   res.status(201).json({ message: "Client created successfully", data });
 };
-
 export const getClientsInformation = async (req: Request, res: Response) => {
   const { page = 1, limit = 10 } = req.params;
 
