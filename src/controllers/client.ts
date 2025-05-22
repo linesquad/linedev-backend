@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
 import Client from "../models/Client";
 
-interface ClientBody {
-  page?: number;
-  limit: number;
-}
-
 export const registerClientForm = async (req: Request, res: Response) => {
   const data = Client.create(req.body);
 
@@ -29,4 +24,15 @@ export const getClientsInformation = async (req: Request, res: Response) => {
     total,
     totalPages: Math.ceil(total / Number(limit)),
   });
+};
+
+export const deleteClientInformation = async (req: Request, res: Response) => {
+  const data = Client.findByIdAndDelete(req.params.id);
+
+  if (!data) {
+    res.status(404).json({ message: "Client not found" });
+    return;
+  }
+
+  res.status(200).json({ message: "Client deleted successfully"});
 };
