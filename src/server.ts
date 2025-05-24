@@ -9,6 +9,7 @@ import pricingRoutes from "./routes/pricing";
 import blogRoutes from "./routes/blogs";
 import teamRoutes from "./routes/team";
 import courseRoutes from "./routes/courses";
+import contactRoutes from "./routes/contact";
 
 const app = express();
 
@@ -26,4 +27,6 @@ app.use("/api/pricing", pricingRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/contact", contactRoutes);
+
 export default app;
