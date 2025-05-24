@@ -6,7 +6,7 @@ import dashboardRoutes from "./routes/dashboard";
 import profileRoutes from "./routes/profile";
 import clientRoutes from "./routes/client";
 import pricingRoutes from "./routes/pricing";
-
+import contactRoutes from "./routes/contact";
 import blogRoutes from "./routes/blogs";
 const app = express();
 
@@ -22,4 +22,5 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/pricing", pricingRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/contact", contactRoutes);
 export default app;
