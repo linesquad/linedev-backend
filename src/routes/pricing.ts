@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createPricing, getPricing, updatePricing, deletePricing } from "../controllers/pricing";
+import { createPricing, getPricing, updatePricing, deletePricing } from "../controllers/Pricing";
 import { validate } from "../middlewares/validate";
 import { pricingSchema } from "../validators/pricing";
 import { requireAuth, requireRole } from "../middlewares/auth";

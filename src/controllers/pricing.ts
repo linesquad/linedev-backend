@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Pricing from "../models/Pricing";
+import Pricing from "../models/pricing";
 
 export const createPricing = async (req: Request, res: Response) => {
   const pricing = await Pricing.create(req.body);
