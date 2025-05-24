@@ -12,19 +12,25 @@ export const getPricing = async (_req: Request, res: Response) => {
 };
 
 export const updatePricing = async (req: Request, res: Response) => {
-  const updatedPricing = await Pricing.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const updatedPricing = await Pricing.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
   if (!updatedPricing) {
     res.status(404).json({ message: "Pricing not found" });
-    return
+    return;
   }
-  res.status(200).json({ message: "Pricing updated successfully", updatedPricing });
+  res
+    .status(200)
+    .json({ message: "Pricing updated successfully", updatedPricing });
 };
 
 export const deletePricing = async (req: Request, res: Response) => {
-  const deletedPricing =await Pricing.findByIdAndDelete(req.params.id)
-  if(!deletePricing){
+  const deletedPricing = await Pricing.findByIdAndDelete(req.params.id);
+  if (!deletedPricing) {
     res.status(404).json({ message: "Pricing not found" });
-    return
+    return;
   }
   res.status(200).json({ message: "Pricing deleted successfully" });
 };
