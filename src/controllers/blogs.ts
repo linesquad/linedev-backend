@@ -11,7 +11,7 @@ interface BlogFilters {
 }
 
 export const createBlog = async (req: Request, res: Response) => {
-  const data = Blog.create(req.body);
+  const data = await Blog.create(req.body);
 
   res.status(201).json({
     message: "Blog created successfully",
