@@ -3,23 +3,16 @@ import app from "../server";
 import mongoose from "mongoose";
 import { createTestAccount } from "./utils/createTestAccount";
 
-let juniorToken: string;
-let middleToken: string;
+
 let seniorToken: string;
-let seniorUserId: string;
+
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!);
 
-  const juniorAccount = await createTestAccount("junior");
-  juniorToken = juniorAccount.accessToken;
-
-  const middleAccount = await createTestAccount("middle");
-  middleToken = middleAccount.accessToken;
-
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
-  seniorUserId = seniorAccount.account._id.toString();
+
 });
 
 afterAll(async () => {
