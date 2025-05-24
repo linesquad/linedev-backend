@@ -19,7 +19,6 @@ router.get("/:id", getBlogById);
 // private routes
 router.post(
   "/",
-  requireAuth,
   requireRole("middle", "senior"),
   validate(createBlogValidator),
   createBlog
@@ -27,18 +26,12 @@ router.post(
 
 router.put(
   "/:id",
-  requireAuth,
   requireRole("middle", "senior"),
   validate(updateBlogValidator),
   updateBlogById
 );
 
-router.delete(
-  "/:id",
-  requireAuth,
-  requireRole("middle", "senior"),
-  deleteBlogById
-);
+router.delete("/:id", requireRole("middle", "senior"), deleteBlogById);
 
 export default router;
 
@@ -301,4 +294,3 @@ export default router;
  *       500:
  *         description: Internal server error
  */
-

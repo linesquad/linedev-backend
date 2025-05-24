@@ -30,8 +30,8 @@ export const getAllBlogs = async (req: Request, res: Response) => {
   const skip = (Number(page) - 1) * Number(limit);
 
   const [blogs, total] = await Promise.all([
-    Blog.find().skip(skip).limit(Number(limit)),
-    Blog.countDocuments(),
+    Blog.find(filters).skip(skip).limit(Number(limit)),
+    Blog.countDocuments(filters),
   ]);
 
   res.status(200).json({
@@ -40,6 +40,8 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     total,
     page: Number(page),
     totalPages: Math.ceil(total / Number(limit)),
+    hasNextPage: Number(page) < Math.ceil(total / Number(limit)),
+    hasPreviousPage: Number(page) > 1
   });
 };
 
