@@ -7,7 +7,7 @@ import {
   deleteBlogById,
 } from "../controllers/blogs";
 import { validate } from "../middlewares/validate";
-import { requireAuth, requireRole } from "../middlewares/auth";
+import { requireRole } from "../middlewares/auth";
 import { createBlogValidator, updateBlogValidator } from "../validators/blogs";
 
 const router = Router();
