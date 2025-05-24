@@ -9,3 +9,5 @@ export const createBlogValidator = z.object({
   category: z.string().min(1),
   isFeatured: z.boolean().optional(),
 });
+
+export const updateBlogValidator = createBlogValidator.partial();
