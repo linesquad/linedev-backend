@@ -6,8 +6,6 @@ import { createTestAccount } from "./utils/createTestAccount";
 let juniorToken: string;
 let middleToken: string;
 let seniorToken: string;
-let juniorUserId: string;
-let middleUserId: string;
 let seniorUserId: string;
 
 beforeAll(async () => {
@@ -15,11 +13,9 @@ beforeAll(async () => {
 
   const juniorAccount = await createTestAccount("junior");
   juniorToken = juniorAccount.accessToken;
-  juniorUserId = juniorAccount.account._id.toString();
 
   const middleAccount = await createTestAccount("middle");
   middleToken = middleAccount.accessToken;
-  middleUserId = middleAccount.account._id.toString();
 
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
