@@ -2,7 +2,6 @@ import { Router } from "express";
 import {
   createTeam,
   getTeam,
-  getTeamByRank,
   updateTeam,
   deleteTeam,
 } from "../controllers/team";
@@ -14,7 +13,6 @@ const router = Router();
 
 // public routes
 router.get("/", getTeam);
-router.get("/:rank", getTeamByRank);
 
 // private routes
 router.post("/", requireRole("senior"), validate(teamSchema), createTeam);
@@ -319,4 +317,3 @@ export default router;
  *       403:
  *         description: Forbidden - requires senior role
  */
-
