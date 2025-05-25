@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Team from "../models/team";
+import Team from "../models/Team";
 
 interface TeamFilters {
   rank?: string;
@@ -22,23 +22,6 @@ export const getTeam = async (req: Request, res: Response) => {
 
   const data = await Team.find(filters).sort({ rank: 1 });
 
-  res.status(200).json({
-    message: "Team fetched successfully",
-    data,
-  });
-};
-
-export const getTeamByRank = async (req: Request, res: Response) => {
-  const { rank } = req.params;
-
-  const data = await Team.find({ rank });
-
-  if (!data) {
-    res.status(404).json({
-      message: "Team not found",
-    });
-    return;
-  }
   res.status(200).json({
     message: "Team fetched successfully",
     data,

@@ -3,16 +3,13 @@ import app from "../server";
 import mongoose from "mongoose";
 import { createTestAccount } from "./utils/createTestAccount";
 
-
 let seniorToken: string;
-
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!);
 
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
-
 });
 
 afterAll(async () => {
@@ -54,12 +51,6 @@ describe("Team API", () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe("Team fetched successfully");
     expect(response.body.data.length).toBeGreaterThan(0);
-  });
-
-  it("should get a team member by rank", async () => {
-    const response = await request(app).get(`/api/team/${rank}`);
-    expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Team fetched successfully");
   });
 
   it("should update a team member", async () => {
