@@ -29,5 +29,5 @@ export const deleteSyllabus = async (req: Request, res: Response) => {
     res.status(404).json({ message: "Syllabus not found" });
     return;
   }
-  res.status(200).json({ message: "Syllabus deleted successfully", data });
+  res.status(200).json({ message: "Syllabus deleted successfully" });
 };

@@ -166,7 +166,7 @@ export default router;
 
 /**
  * @swagger
- * /courses:
+ * /api/courses:
  *   get:
  *     summary: Get all courses
  *     tags: [Courses]
@@ -189,7 +189,7 @@ export default router;
 
 /**
  * @swagger
- * /courses/{id}:
+ * /api/courses/{id}:
  *   get:
  *     summary: Get a course by ID
  *     tags: [Courses]
@@ -227,7 +227,7 @@ export default router;
 
 /**
  * @swagger
- * /courses:
+ * /api/courses:
  *   post:
  *     summary: Create a new course
  *     tags: [Courses]
@@ -263,7 +263,7 @@ export default router;
 
 /**
  * @swagger
- * /courses/{id}:
+ * /api/courses/{id}:
  *   put:
  *     summary: Update a course
  *     tags: [Courses]
@@ -308,7 +308,7 @@ export default router;
 
 /**
  * @swagger
- * /courses/{id}:
+ * /api/courses/{id}:
  *   delete:
  *     summary: Delete a course
  *     tags: [Courses]
@@ -342,4 +342,3 @@ export default router;
  *       404:
  *         description: Course not found
  */
-

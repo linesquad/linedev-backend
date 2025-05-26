@@ -92,7 +92,7 @@ export default router;
 
 /**
  * @swagger
- * /team:
+ * /api/team:
  *   get:
  *     summary: Get all team members
  *     tags: [Team]
@@ -120,7 +120,7 @@ export default router;
 
 /**
  * @swagger
- * /team/{rank}:
+ * /api/team/{rank}:
  *   get:
  *     summary: Get team members by rank
  *     tags: [Team]
@@ -158,7 +158,7 @@ export default router;
 
 /**
  * @swagger
- * /team:
+ * /api/team:
  *   post:
  *     summary: Create a new team member
  *     tags: [Team]
@@ -220,7 +220,7 @@ export default router;
 
 /**
  * @swagger
- * /team/{id}:
+ * /api/team/{id}:
  *   put:
  *     summary: Update a team member
  *     tags: [Team]
@@ -285,7 +285,7 @@ export default router;
 
 /**
  * @swagger
- * /team/{id}:
+ * /api/team/{id}:
  *   delete:
  *     summary: Delete a team member
  *     tags: [Team]
