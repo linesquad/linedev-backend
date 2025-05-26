@@ -5,7 +5,7 @@ import { JWTPayload } from "../types/express";
 
 export const requireRole = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const accessToken = req.cookies.accessToken;
+    const accessToken = req.cookies.token;
     if (!accessToken) {
       res.status(401).json({ message: "Unauthorized" });
       return;
@@ -40,7 +40,7 @@ export const requireAuth = async (
   res: Response,
   next: NextFunction
 ) => {
-  const accessToken = req.cookies.accessToken;
+  const accessToken = req.cookies.token;
   if (!accessToken) {
     res.status(401).json({ message: "Unauthorized" });
     return;
