@@ -27,7 +27,7 @@ export const getDeveloperAnalytics = async (req: Request, res: Response) => {
       },
       {
         $lookup: {
-          from: "Auth",
+          from: "auths",
           localField: "_id",
           foreignField: "_id",
           as: "user",
@@ -88,4 +88,3 @@ export const getDeveloperAnalytics = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error fetching analytics" });
   }
 };
-
