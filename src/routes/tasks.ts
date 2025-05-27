@@ -18,7 +18,7 @@ router.post("/", requireRole("senior"), validate(createTaskSchema), createTask);
 
 router.get("/", requireRole("junior", "middle", "senior"), getTasks);
 
-router.get("/:id", requireRole("junior", "middle"), getTaskById);
+router.get("/:id", requireRole("junior", "middle", "senior"), getTaskById);
 
 router.put(
   "/:id",
