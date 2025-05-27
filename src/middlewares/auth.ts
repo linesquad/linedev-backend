@@ -40,7 +40,7 @@ export const requireAuth = async (
   res: Response,
   next: NextFunction
 ) => {
-  const accessToken = req.cookies.token;
+  const accessToken = req.cookies.accessToken;
   if (!accessToken) {
     res.status(401).json({ message: "Unauthorized" });
     return;
