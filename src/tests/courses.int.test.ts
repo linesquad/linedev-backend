@@ -30,6 +30,13 @@ describe("Courses API", () => {
         level: "beginner",
         price: 100,
         tags: ["test", "course"],
+        syllabus: [
+          {
+            title: "Test Course",
+            description: "Test Description",
+            week: "1",
+          },
+        ],
       });
     expect(res.status).toBe(201);
     expect(res.body.message).toBe("Course created successfully");
@@ -50,6 +57,7 @@ describe("Courses API", () => {
       .set("Cookie", `accessToken=${seniorToken}`);
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Course fetched successfully");
+    expect(res.body.data.syllabus).toBeDefined();
   });
 
   it("should update a course", async () => {
@@ -63,6 +71,7 @@ describe("Courses API", () => {
       });
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Course updated successfully");
+    expect(res.body.data.syllabus).toBeDefined();
   });
 
   it("should delete a course", async () => {
