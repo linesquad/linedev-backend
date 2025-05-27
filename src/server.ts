@@ -11,6 +11,7 @@ import teamRoutes from "./routes/team";
 import courseRoutes from "./routes/courses";
 import contactRoutes from "./routes/contact";
 
+import PortfolioRoute from "./routes/portfolio";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -29,4 +30,5 @@ app.use("/api/team", teamRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/contact", contactRoutes);
 
+app.use("/api/portfolio", PortfolioRoute);
 export default app;
