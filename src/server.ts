@@ -9,7 +9,7 @@ import pricingRoutes from "./routes/pricing";
 import blogRoutes from "./routes/blogs";
 import teamRoutes from "./routes/team";
 import courseRoutes from "./routes/courses";
-
+import taskRoutes from "./routes/tasks";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -26,4 +26,5 @@ app.use("/api/pricing", pricingRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/tasks", taskRoutes);
 export default app;
