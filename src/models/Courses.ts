@@ -8,6 +8,16 @@ const courseSchema = new mongoose.Schema(
     level: { enum: ["beginner", "intermediate", "advanced"] },
     price: { type: Number, required: true },
     tags: { type: [String], required: true },
+    syllabus: {
+      type: [
+        {
+          title: { type: String, required: true },
+          description: { type: String, required: true },
+          week: { type: String, required: true },
+        },
+      ],
+      required: true,
+    },
   },
   { timestamps: true }
 );

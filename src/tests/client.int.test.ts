@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { createTestAccount } from "./utils/createTestAccount";
 
 let juniorToken: string;
-let middleToken: string;
+
 let seniorToken: string;
 
 beforeAll(async () => {
@@ -12,10 +12,6 @@ beforeAll(async () => {
 
   const juniorAccount = await createTestAccount("junior");
   juniorToken = juniorAccount.accessToken;
-
-  const middleAccount = await createTestAccount("middle");
-  middleToken = middleAccount.accessToken;
-
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
 });
