@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const ReviewSchema = new mongoose.Schema(
+const reviewSchema = new mongoose.Schema(
   {
     course: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,14 +19,15 @@ export const ReviewSchema = new mongoose.Schema(
       max: 5,
     },
     comment: {
-      type: String
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-ReviewSchema.index({ course: 1, user: 1 }, { unique: true });
+reviewSchema.index({ course: 1, user: 1 }, { unique: true });
 
-const Review = mongoose.model("Review", ReviewSchema);
+const Review = mongoose.model("Review", reviewSchema);
 
 export default Review;
