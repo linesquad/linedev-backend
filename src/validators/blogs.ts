@@ -8,6 +8,7 @@ export const createBlogValidator = z.object({
   image: z.string().url().optional(),
   category: z.string().min(1),
   isFeatured: z.boolean().optional(),
+  views: z.number().optional(),
 });
 
 export const updateBlogValidator = createBlogValidator.partial();
