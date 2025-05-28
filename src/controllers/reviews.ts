@@ -3,7 +3,7 @@ import Review from "../models/Review";
 import Course from "../models/Courses";
 import mongoose from "mongoose";
 
-async function updateCourseRatings(courseId: string) {
+async function statisticsCourseRatings(courseId: string) {
   const aggregationResult = await Review.aggregate([
     { $match: { course: new mongoose.Types.ObjectId(courseId) } },
     {
@@ -52,7 +52,7 @@ export const createReview = async (req: Request, res: Response) => {
     comment,
   });
 
-  await updateCourseRatings(course);
+  await statisticsCourseRatings(course);
 
   res
     .status(201)
@@ -79,7 +79,7 @@ export const updateOwnReview = async (req: Request, res: Response) => {
     }
   );
 
-  await updateCourseRatings(review.course.toString());
+  await statisticsCourseRatings(review.course.toString());
 
   res
     .status(200)
@@ -102,21 +102,21 @@ export const deleteOwnReview = async (req: Request, res: Response) => {
 
   await Review.findByIdAndDelete(req.params.id);
 
-  await updateCourseRatings(courseId);
+  await statisticsCourseRatings(courseId);
 
   res.status(200).json({ message: "Review deleted successfully" });
 };
 
 export const getReviewsByCourse = async (req: Request, res: Response) => {
-  const { courseId } = req.params;
 
-  const courseExists = await Course.findById(courseId);
+
+  const courseExists = await Course.findById(req.params.id);
   if (!courseExists) {
     res.status(404).json({ message: "Course not found" });
     return;
   }
 
-  const reviews = await Review.find({ course: courseId }).sort({
+  const reviews = await Review.find({ course: req.params.id }).sort({
     createdAt: -1,
   });
 

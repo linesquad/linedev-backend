@@ -13,7 +13,7 @@ import taskRoutes from "./routes/tasks";
 import contactRoutes from "./routes/contact";
 
 import PortfolioRoute from "./routes/portfolio";
-import reviewRoutes from "./routes/reviews";
+import reviewRoutes from "./routes/review";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));

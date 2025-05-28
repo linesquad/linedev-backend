@@ -1,11 +1,11 @@
 import { Router } from "express";
 
 import {
+  createReview,
   deleteOwnReview,
-  getReviewsByCourseId,
-  postReview,
+  getReviewsByCourse,
   updateOwnReview,
-} from "../controllers/review";
+} from "../controllers/reviews";
 import { validate } from "../middlewares/validate";
 import { createReviewSchema, updateReviewSchema } from "../validators/reviews";
 import { requireAuth } from "../middlewares/auth";
@@ -13,15 +13,13 @@ import { requireAuth } from "../middlewares/auth";
 const router = Router();
 
 // public routes
-router.get("/:id", getReviewsByCourseId);
+router.get("/:id", getReviewsByCourse);
 
 // authenticated routes
 
-router.post("/", requireAuth, validate(createReviewSchema), postReview);
-
+router.post("/", requireAuth, validate(createReviewSchema), createReview);
 
 router.put("/:id", requireAuth, validate(updateReviewSchema), updateOwnReview);
-
 
 router.delete("/:id", requireAuth, deleteOwnReview);
 
