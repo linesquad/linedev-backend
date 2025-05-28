@@ -55,7 +55,6 @@ export const getBlogById = async (req: Request, res: Response) => {
     return;
   }
 
-  // Increment views count and save
   data.views = (data.views || 0) + 1;
   await data.save();
 
