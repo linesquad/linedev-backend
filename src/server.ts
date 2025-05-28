@@ -11,7 +11,7 @@ import teamRoutes from "./routes/team";
 import courseRoutes from "./routes/courses";
 import taskRoutes from "./routes/tasks";
 import contactRoutes from "./routes/contact";
-
+import commentRoutes from "./routes/comment";
 import PortfolioRoute from "./routes/portfolio";
 const app = express();
 
@@ -33,5 +33,6 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/contact", contactRoutes);
 
 app.use("/api/portfolio", PortfolioRoute);
+app.use("/api/comment", commentRoutes);
 
 export default app;
