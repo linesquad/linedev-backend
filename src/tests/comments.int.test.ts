@@ -33,7 +33,7 @@ describe("Comment API", () => {
         content: "Test comment Test comment Test comment Test comment",
         name: "vinme",
         approved: false,
-        blogId: blogId,
+        blog: blogId,
       });
 
     expect(response.status).toBe(201);
@@ -47,7 +47,7 @@ describe("Comment API", () => {
       content: "Test comment",
       name: "vinme",
       approved: false,
-      blogId: blogId,
+      blog: blogId,
     });
 
     expect(response.status).toBe(401);
@@ -77,7 +77,7 @@ describe("Comment API", () => {
 
   it("should not allow non-senior users to update comments", async () => {
     const response = await request(app)
-      .put(`/api/comment/${commentId}`)
+      .patch(`/api/comment/${commentId}`)
       .set("Cookie", `accessToken=${clientToken}`)
       .send({ approved: true });
 
@@ -86,12 +86,12 @@ describe("Comment API", () => {
 
   it("should allow senior users to update a comment", async () => {
     const response = await request(app)
-      .put(`/api/comment/${commentId}`)
+      .patch(`/api/comment/${commentId}`)
       .set("Cookie", `accessToken=${seniorToken}`)
       .send({ approved: true });
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe("Comment updated successfully");
+    expect(response.body.message).toBe("Comment approved successfully");
     expect(response.body.comment.approved).toBe(true);
   });
 
