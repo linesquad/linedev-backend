@@ -14,6 +14,7 @@ import contactRoutes from "./routes/contact";
 import analyticsRoutes from "./routes/analytics";
 import commentRoutes from "./routes/comment";
 import PortfolioRoute from "./routes/portfolio";
+import reviewRoutes from "./routes/review";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -37,4 +38,5 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
 
+app.use("/api/reviews", reviewRoutes);
 export default app;
