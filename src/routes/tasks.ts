@@ -1,22 +1,30 @@
 import {
   createTask,
   deleteTask,
+  getMyTasks,
   getTaskById,
   getTasks,
   updateTask,
 } from "../controllers/tasks";
 import { validate } from "../middlewares/validate";
 import { createTaskSchema, updateTaskSchema } from "../validators/tasks";
-import { requireRole } from "../middlewares/auth";
+import { requireAuth, requireRole } from "../middlewares/auth";
 import { Router } from "express";
 
 const router = Router();
-
 
 //private routes
 router.post("/", requireRole("senior"), validate(createTaskSchema), createTask);
 
 router.get("/", requireRole("junior", "middle", "senior"), getTasks);
+
+
+router.get(
+  "/mine",
+  requireAuth,
+  requireRole("junior", "middle", "senior"),
+  getMyTasks
+);
 
 router.get("/:id", requireRole("junior", "middle", "senior"), getTaskById);
 
@@ -30,8 +38,6 @@ router.put(
 router.delete("/:id", requireRole("senior"), deleteTask);
 
 export default router;
-
-
 
 /**
  * @swagger
@@ -163,5 +169,3 @@ export default router;
  *       403:
  *         description: Forbidden - Only senior role can delete tasks
  */
-
-
