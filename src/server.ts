@@ -12,6 +12,7 @@ import courseRoutes from "./routes/courses";
 import taskRoutes from "./routes/tasks";
 import contactRoutes from "./routes/contact";
 import analyticsRoutes from "./routes/analytics";
+import commentRoutes from "./routes/comment";
 import PortfolioRoute from "./routes/portfolio";
 const app = express();
 
@@ -34,5 +35,6 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
 app.use("/api/portfolio", PortfolioRoute);
+app.use("/api/comment", commentRoutes);
 
 export default app;
