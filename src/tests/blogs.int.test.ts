@@ -59,6 +59,7 @@ describe("Blogs API", () => {
 
     expect(response.status).toBe(200);
     expect(response.body.data).toBeDefined();
+    expect(response.body.data.views).toBe(1);
   });
 
   it("should update a blog by id", async () => {

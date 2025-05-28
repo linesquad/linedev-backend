@@ -55,6 +55,9 @@ export const getBlogById = async (req: Request, res: Response) => {
     return;
   }
 
+  data.views = (data.views || 0) + 1;
+  await data.save();
+
   res.status(200).json({
     message: "Blog fetched successfully",
     data,
