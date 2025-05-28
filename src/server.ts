@@ -13,6 +13,7 @@ import taskRoutes from "./routes/tasks";
 import contactRoutes from "./routes/contact";
 
 import PortfolioRoute from "./routes/portfolio";
+import reviewRoutes from "./routes/review";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -33,5 +34,5 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/contact", contactRoutes);
 
 app.use("/api/portfolio", PortfolioRoute);
-
+app.use("/api/reviews", reviewRoutes);
 export default app;
