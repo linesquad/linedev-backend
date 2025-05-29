@@ -51,6 +51,7 @@ export default router;
  *         - status
  *         - dueDate
  *         - assignedTo
+ *         - priority
  *       properties:
  *         title:
  *           type: string
@@ -69,6 +70,10 @@ export default router;
  *         assignedTo:
  *           type: string
  *           description: ID of the user assigned to the task
+ *         priority:
+ *           type: string
+ *           enum: [low, medium, high]
+ *           description: Priority level of the task
  *
  * /api/tasks:
  *   post:

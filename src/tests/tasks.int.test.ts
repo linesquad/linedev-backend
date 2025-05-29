@@ -107,6 +107,20 @@ describe("Tasks API", () => {
     expect(response.body.task.isOverdue).toBe(false);
   });
 
+  it("should fail to update a task", async () => {
+    const response = await request(app)
+      .put(`/api/tasks/${taskId}`)
+      .set("Cookie", `accessToken=${juniorToken}`)
+      .send({
+        status: "done",
+      });
+
+    expect(response.status).toBe(403);
+    expect(response.body.message).toBe(
+      "Forbidden: junior is not allowed to access this resource"
+    );
+  });
+
   it("should delete a task", async () => {
     const response = await request(app)
       .delete(`/api/tasks/${taskId}`)

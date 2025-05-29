@@ -5,7 +5,11 @@ const computeIsOverdue = (dueDate: Date, status: string): boolean => {
   return new Date() > new Date(dueDate) && status !== "done";
 };
 
-const addIsOverdueToTask = (task: any) => {
+const addIsOverdueToTask = (task: {
+  dueDate: Date;
+  status: string;
+  toObject: () => Record<string, any>;
+}) => {
   return {
     ...task.toObject(),
     isOverdue: computeIsOverdue(task.dueDate, task.status),
