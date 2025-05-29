@@ -3,6 +3,7 @@ import {
   deleteTask,
   getTaskById,
   getTasks,
+  toggleSubtask,
   updateTask,
 } from "../controllers/tasks";
 import { validate } from "../middlewares/validate";
@@ -11,7 +12,6 @@ import { requireRole } from "../middlewares/auth";
 import { Router } from "express";
 
 const router = Router();
-
 
 //private routes
 router.post("/", requireRole("senior"), validate(createTaskSchema), createTask);
@@ -27,11 +27,15 @@ router.put(
   updateTask
 );
 
+router.patch(
+  "/:taskId/subtasks/:subtaskId",
+  requireRole("senior"),
+  toggleSubtask
+);
+
 router.delete("/:id", requireRole("senior"), deleteTask);
 
 export default router;
-
-
 
 /**
  * @swagger
@@ -63,6 +67,21 @@ export default router;
  *         assignedTo:
  *           type: string
  *           description: ID of the user assigned to the task
+ *         subtasks:
+ *           type: array
+ *           description: List of subtasks
+ *           items:
+ *             type: object
+ *             required:
+ *               - title
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Title of the subtask
+ *               done:
+ *                 type: boolean
+ *                 description: Completion status of subtask
+ *                 default: false
  *
  * /api/tasks:
  *   post:
@@ -162,6 +181,31 @@ export default router;
  *         description: Unauthorized
  *       403:
  *         description: Forbidden - Only senior role can delete tasks
+ *
+ * /api/tasks/{taskId}/subtasks/{subtaskId}:
+ *   patch:
+ *     summary: Toggle subtask completion status
+ *     tags: [Tasks]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: subtaskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Subtask status toggled successfully
+ *       404:
+ *         description: Task or subtask not found
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Only senior role can toggle subtasks
  */
-
-
