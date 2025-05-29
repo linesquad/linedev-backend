@@ -109,7 +109,7 @@ import { requireAuth, requireRole } from "../middlewares/auth";
 const router = Router();
 
 //public routes
-router.get("/", requireAuth, getTestimonials);
+router.get("/", getTestimonials);
 
 //private routes
 router.post("/", requireRole("senior"), createTestimonial);

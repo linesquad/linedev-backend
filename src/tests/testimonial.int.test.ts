@@ -4,14 +4,10 @@ import mongoose from "mongoose";
 import { createTestAccount } from "./utils/createTestAccount";
 
 let seniorToken: string;
-let juniorToken: string;
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!);
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
-
-  const junior = await createTestAccount("junior")
-  juniorToken = junior.accessToken
 });
 
 afterAll(async () => {
@@ -38,7 +34,7 @@ describe("Testimonial API", () => {
   });
 
   it("should get all testimonials", async () => { 
-    const response = await request(app).get("/api/testimonials").set("Cookie", `accessToken=${juniorToken}`);
+    const response = await request(app).get("/api/testimonials");
     expect(response.status).toBe(200);
     expect(response.body.testimonials).toBeDefined();
   });
