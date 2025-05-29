@@ -7,3 +7,6 @@ export const contactSchema = z.object({
   message: z.string().min(10).max(300),
 });
 
+export const updateContactSchema = contactSchema.partial().extend({
+  status: z.enum(["new", "in review", "responded", "closed"]),
+});

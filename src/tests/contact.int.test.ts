@@ -5,19 +5,15 @@ import { createTestAccount } from "./utils/createTestAccount";
 
 let juniorToken: string;
 let seniorToken: string;
-let juniorUserId: string;
-let seniorUserId: string;
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!);
 
   const juniorAccount = await createTestAccount("junior");
   juniorToken = juniorAccount.accessToken;
-  juniorUserId = juniorAccount.account._id.toString();
 
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
-  seniorUserId = seniorAccount.account._id.toString();
 });
 
 afterAll(async () => {
@@ -26,6 +22,7 @@ afterAll(async () => {
 });
 
 describe("Contact API", () => {
+  let id: string;
   it("should create a contact", async () => {
     const response = await request(app).post("/api/contact").send({
       name: "John Doe",
@@ -36,6 +33,7 @@ describe("Contact API", () => {
 
     expect(response.status).toBe(201);
     expect(response.body.message).toBe("Contact created successfully");
+    id = response.body.contact._id;
   });
 
   it("should get all contacts", async () => {
@@ -47,11 +45,32 @@ describe("Contact API", () => {
     expect(response.body.message).toBe("Contacts fetched successfully");
     expect(response.body.contacts.length).toBeGreaterThan(0);
   });
+
+  it("should update contact status", async () => {
+    const response = await request(app)
+      .patch(`/api/contact/${id}/status`)
+      .set("Cookie", `accessToken=${seniorToken}`)
+      .send({ status: "in review" });
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Contact status updated successfully");
+    expect(response.body.data.status).toBe("in review");
+  });
+
   it("should fail if role is not senior", async () => {
     const response = await request(app)
       .get("/api/contact")
       .set("Cookie", `accessToken=${juniorToken}`);
 
     expect(response.status).toBe(403);
+  });
+
+  it("should delete contact", async () => {
+    const response = await request(app)
+      .delete(`/api/contact/${id}`)
+      .set("Cookie", `accessToken=${seniorToken}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe("Contact deleted successfully");
   });
 });
