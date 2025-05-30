@@ -1,14 +1,29 @@
 import Task from "../models/Tasks";
 import { Request, Response } from "express";
 
+
 export const createTask = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
+    const {
+      title,
+      description,
+      status,
+      priority,
+      dueDate,
+      assignedTo,
+      subtasks = [],
+    } = req.body;
     const task = await Task.create({
-      ...req.body,
-      subtasks: req.body.subtasks || [],
+      title,
+      description,
+      status,
+      priority,
+      dueDate,
+      assignedTo,
+      subtasks,
     });
     res.status(201).json({ message: "Task created successfully", task });
   } catch (error) {
@@ -38,24 +53,32 @@ export const updateTask = async (
   res: Response
 ): Promise<void> => {
   try {
-    const task = await Task.findById(req.params.id);
-    if (!task) {
-      res.status(404).json({ message: "Task not found" });
-      return;
-    }
+    const { title, description, status, priority, dueDate, subtasks, assignedTo } =
+      req.body;
 
     const updatedTask = await Task.findByIdAndUpdate(
       req.params.id,
       {
-        ...req.body,
-        subtasks: req.body.subtasks || task.subtasks,
+        title,
+        description,
+        status,
+        priority,
+        dueDate,
+        subtasks,
+        assignedTo,
       },
       { new: true }
     );
 
-    res
-      .status(200)
-      .json({ message: "Task updated successfully", task: updatedTask });
+    if (!updatedTask) {
+      res.status(404).json({ message: "Task not found" });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Task updated successfully",
+      task: updatedTask,
+    });
   } catch (error) {
     res.status(400).json({ message: "Error updating task", error });
   }

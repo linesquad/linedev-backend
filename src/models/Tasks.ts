@@ -29,7 +29,6 @@ const taskSchema = new mongoose.Schema(
       required: true,
     },
     subtasks: [
-
       {
         title: {
           type: String,
