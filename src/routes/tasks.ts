@@ -3,7 +3,6 @@ import {
   deleteTask,
   getTaskById,
   getTasks,
-  toggleSubtask,
   updateTask,
 } from "../controllers/tasks";
 import { validate } from "../middlewares/validate";
@@ -25,12 +24,6 @@ router.put(
   requireRole("senior"),
   validate(updateTaskSchema),
   updateTask
-);
-
-router.patch(
-  "/:taskId/subtasks/:subtaskId",
-  requireRole("senior"),
-  toggleSubtask
 );
 
 router.delete("/:id", requireRole("senior"), deleteTask);
