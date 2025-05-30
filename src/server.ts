@@ -16,6 +16,7 @@ import commentRoutes from "./routes/comment";
 import PortfolioRoute from "./routes/portfolio";
 import reviewRoutes from "./routes/review";
 import testimonialRoutes from "./routes/testimonial";
+import userRoutes from "./routes/user";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -36,6 +37,7 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/testimonials", testimonialRoutes);
+app.use("/api/users", userRoutes);
 
 app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
