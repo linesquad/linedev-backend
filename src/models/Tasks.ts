@@ -33,6 +33,18 @@ const taskSchema = new mongoose.Schema(
       enum: ["low", "medium", "high"],
       default: "medium",
     },
+    subtasks: [
+      {
+        title: {
+          type: String,
+          required: true,
+        },
+        done: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

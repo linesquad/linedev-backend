@@ -74,6 +74,21 @@ export default router;
  *           type: string
  *           enum: [low, medium, high]
  *           description: Priority level of the task
+ *         subtasks:
+ *           type: array
+ *           description: List of subtasks
+ *           items:
+ *             type: object
+ *             required:
+ *               - title
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Title of the subtask
+ *               done:
+ *                 type: boolean
+ *                 description: Completion status of subtask
+ *                 default: false
  *
  * /api/tasks:
  *   post:
@@ -173,4 +188,31 @@ export default router;
  *         description: Unauthorized
  *       403:
  *         description: Forbidden - Only senior role can delete tasks
+ *
+ * /api/tasks/{taskId}/subtasks/{subtaskId}:
+ *   patch:
+ *     summary: Toggle subtask completion status
+ *     tags: [Tasks]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: subtaskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Subtask status toggled successfully
+ *       404:
+ *         description: Task or subtask not found
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Only senior role can toggle subtasks
  */

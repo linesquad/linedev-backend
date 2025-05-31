@@ -7,6 +7,12 @@ export const createTaskSchema = z.object({
   dueDate: z.string().transform((str) => new Date(str)),
   assignedTo: z.string().min(1),
   priority: z.enum(["low", "medium", "high"]),
+  subtasks: z.array(
+    z.object({
+      title: z.string().min(1),
+      done: z.boolean().default(false),
+    })
+  ),
 });
 
 export const updateTaskSchema = createTaskSchema.partial();
