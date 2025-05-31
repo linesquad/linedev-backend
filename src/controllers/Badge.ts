@@ -43,8 +43,7 @@ export const addBadge = async (req: Request, res: Response) => {
       return;
     }
 
-    const newBadge = { title, description, iconUrl, awardedAt: new Date() };
-    auth.badges.push(newBadge);
+    auth.badges.push({ title, description, iconUrl, awardedAt: new Date() });
     await auth.save();
 
     res.status(200).json({ message: "Badge added successfully", auth });

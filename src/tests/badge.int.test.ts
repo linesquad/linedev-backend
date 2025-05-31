@@ -5,12 +5,15 @@ import { createTestAccount } from "./utils/createTestAccount";
 
 let seniorToken: string;
 let seniorAccountId: string;
+let juniorAccountId: string;
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!);
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
   seniorAccountId = seniorAccount.account._id.toString();
+  const juniorAccount = await createTestAccount("junior");
+  juniorAccountId = juniorAccount.account._id.toString();
 });
 
 afterAll(async () => {
@@ -21,7 +24,7 @@ afterAll(async () => {
 describe("User API", () => {
   it("should update skills", async () => {
     const response = await request(app)
-      .patch(`/api/users/${seniorAccountId}/skills`)
+      .patch(`/api/users/${juniorAccountId}/skills`)
       .set("Cookie", `accessToken=${seniorToken}`)
       .send({ skills: ["JavaScript", "MongoDB"] });
     expect(response.status).toBe(200);
@@ -30,7 +33,7 @@ describe("User API", () => {
 
   it("should add a badge", async () => {
     const response = await request(app)
-      .patch(`/api/users/${seniorAccountId}/badges`)
+      .patch(`/api/users/${juniorAccountId}/badges`)
       .set("Cookie", `accessToken=${seniorToken}`)
       .send({
         title: "Badge 1",
