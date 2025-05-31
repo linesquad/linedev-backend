@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { updateSkills, addBadge } from "../controllers/user";
+import { updateSkills, addBadge } from "../controllers/Badge";
 import { requireRole } from "../middlewares/auth";
 
 const router = Router();

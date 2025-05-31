@@ -5,6 +5,12 @@ export const registerSchema = z.object({
   email: z.string().email(),
   role: z.enum(["client", "junior", "middle", "senior"]).default("client"),
   password: z.string().min(6),
+  skills: z.array(z.string()).optional(),
+  badges: z.array(z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    iconUrl: z.string().url(),
+  })).optional(),
 });
 
 export const loginSchema = z.object({

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { badgeSchema } from "./Badge";
 
 export const authSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -10,6 +11,8 @@ export const authSchema = new mongoose.Schema({
     default: "client",
   },
   refreshToken: { type: String, default: null },
+  skills: { type: [String], default: [] },
+  badges: { type: [badgeSchema], default: [] },
 });
 
 const Auth = mongoose.model("Auth", authSchema);
