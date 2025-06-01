@@ -23,9 +23,16 @@ const PortfolioSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
+PortfolioSchema.index({ category: 1, createdAt: -1 });
 
 const Portfolio = mongoose.model("Portfolio", PortfolioSchema);
 
