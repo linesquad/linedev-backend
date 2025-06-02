@@ -10,6 +10,8 @@ export const developerProfileSchema = z.object({
   rank: z.string().min(1),
   bio: z.string().min(1),
   skills: z.array(z.string()),
-  profileImage: z.string().url(),
-  tasks: z.array(taskSchema),
+  profileImage: z.string().url().optional(),
+  tasks: z.array(taskSchema).optional(),
 });
+
+export const updateDeveloperSchema = developerProfileSchema.partial();

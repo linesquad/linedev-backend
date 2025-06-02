@@ -16,6 +16,7 @@ import commentRoutes from "./routes/comment";
 import PortfolioRoute from "./routes/portfolio";
 import reviewRoutes from "./routes/review";
 import testimonialRoutes from "./routes/testimonial";
+import developersRoutes from "./routes/developers";
 import userRoutes from "./routes/badge";
 const app = express();
 
@@ -38,7 +39,7 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/users", userRoutes);
-
+app.use("/api/developers", developersRoutes);
 app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
 
