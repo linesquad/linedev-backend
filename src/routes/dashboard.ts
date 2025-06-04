@@ -1,16 +1,18 @@
 import { Router } from "express";
 import {
+  clientDashboard,
   juniorDashboard,
   middleDashboard,
   seniorDashboard,
 } from "../controllers/dashboard";
-import { requireAuth, requireRole } from "../middlewares/auth";
+import { requireRole } from "../middlewares/auth";
 
 const router = Router();
 
-router.get("/junior", requireAuth, requireRole("junior"), juniorDashboard);
-router.get("/middle", requireAuth, requireRole("middle"), middleDashboard);
-router.get("/senior", requireAuth, requireRole("senior"), seniorDashboard);
+router.get("/client", requireRole("client"), clientDashboard);
+router.get("/junior", requireRole("junior"), juniorDashboard);
+router.get("/middle", requireRole("middle"), middleDashboard);
+router.get("/senior", requireRole("senior"), seniorDashboard);
 
 export default router;
 
