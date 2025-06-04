@@ -18,6 +18,7 @@ import reviewRoutes from "./routes/review";
 import testimonialRoutes from "./routes/testimonial";
 import userRoutes from "./routes/badge";
 import categoryRoutes from "./routes/category";
+import yourLogoRoutes from "./routes/yourlogo";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -42,6 +43,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/portfolio-categories", categoryRoutes);
 app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
+app.use("/api/yourlogo", yourLogoRoutes);
 
 app.use("/api/reviews", reviewRoutes);
 export default app;
