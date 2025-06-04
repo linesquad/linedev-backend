@@ -8,7 +8,7 @@ let juniorToken: string;
 let seniorToken: string;
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL!);
+  await mongoose.connect(process.env.MONGO_TEST_URL!);
 
   const juniorAccount = await createTestAccount("junior");
   juniorToken = juniorAccount.accessToken;

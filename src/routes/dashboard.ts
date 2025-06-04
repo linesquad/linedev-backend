@@ -1,21 +1,46 @@
 import { Router } from "express";
 import {
+  clientDashboard,
   juniorDashboard,
   middleDashboard,
   seniorDashboard,
 } from "../controllers/dashboard";
-import { requireAuth, requireRole } from "../middlewares/auth";
+import { requireRole } from "../middlewares/auth";
 
 const router = Router();
 
-router.get("/junior", requireAuth, requireRole("junior"), juniorDashboard);
-router.get("/middle", requireAuth, requireRole("middle"), middleDashboard);
-router.get("/senior", requireAuth, requireRole("senior"), seniorDashboard);
+router.get("/client", requireRole("client"), clientDashboard);
+router.get("/junior", requireRole("junior"), juniorDashboard);
+router.get("/middle", requireRole("middle"), middleDashboard);
+router.get("/senior", requireRole("senior"), seniorDashboard);
 
 export default router;
 
 /**
  * @swagger
+ * /api/dashboard/client:
+ *   get:
+ *     summary: Get client dashboard
+ *     description: Returns the client dashboard information for authenticated client users
+ *     tags:
+ *       - Dashboard
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Client dashboard information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Hello client
+ *       401:
+ *         description: Unauthorized - User not authenticated
+ *       403:
+ *         description: Forbidden - User does not have required role
  * /api/dashboard/junior:
  *   get:
  *     summary: Get junior dashboard

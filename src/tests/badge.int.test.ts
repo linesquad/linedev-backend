@@ -8,7 +8,7 @@ let seniorAccountId: string;
 let juniorAccountId: string;
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL!);
+  await mongoose.connect(process.env.MONGO_TEST_URL!);
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
   seniorAccountId = seniorAccount.account._id.toString();

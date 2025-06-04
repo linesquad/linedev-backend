@@ -5,7 +5,7 @@ import { createTestAccount } from "./utils/createTestAccount";
 
 let accessToken: string;
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL!);
+  await mongoose.connect(process.env.MONGO_TEST_URL!);
   const account = await createTestAccount("junior");
   accessToken = account.accessToken;
 });
