@@ -29,6 +29,7 @@ export const requireRole = (...roles: string[]) => {
           });
         return;
       }
+      
       next();
     } catch (error) {
       res.status(401).json({ message: "Unauthorized" });

@@ -6,7 +6,7 @@ import { createTestAccount } from "./utils/createTestAccount";
 let seniorToken: string;
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL!);
+  await mongoose.connect(process.env.MONGO_TEST_URL!);
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
 });

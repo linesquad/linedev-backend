@@ -5,7 +5,7 @@ import { createTestAccount } from "./utils/createTestAccount";
 
 let seniorToken: string;
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL!);
+  await mongoose.connect(process.env.MONGO_TEST_URL!);
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
 });
@@ -33,7 +33,7 @@ describe("Testimonial API", () => {
     testimonialId = response.body.testimonial._id;
   });
 
-  it("should get all testimonials", async () => { 
+  it("should get all testimonials", async () => {
     const response = await request(app).get("/api/testimonials");
     expect(response.status).toBe(200);
     expect(response.body.testimonials).toBeDefined();

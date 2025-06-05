@@ -18,6 +18,7 @@ import reviewRoutes from "./routes/review";
 import testimonialRoutes from "./routes/testimonial";
 import developersRoutes from "./routes/developers";
 import userRoutes from "./routes/badge";
+import leaderboard from "./routes/leaderboard";
 const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
@@ -42,6 +43,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/developers", developersRoutes);
 app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
-
+app.use("/api/leaderboard", leaderboard);
 app.use("/api/reviews", reviewRoutes);
 export default app;

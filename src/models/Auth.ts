@@ -13,6 +13,7 @@ export const authSchema = new mongoose.Schema({
   refreshToken: { type: String, default: null },
   skills: { type: [String], default: [] },
   badges: { type: [badgeSchema], default: [] },
+  imageUrl: { type: String, default: "" },
 });
 
 const Auth = mongoose.model("Auth", authSchema);
