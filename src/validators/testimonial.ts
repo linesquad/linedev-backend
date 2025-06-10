@@ -6,3 +6,5 @@ export const createTestimonialSchema = z.object({
   quote: z.string().min(1),
   imageUrl: z.string().url(),
 });
+
+export const updateTestimonialSchema = createTestimonialSchema.partial();

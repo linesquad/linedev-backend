@@ -1,11 +1,16 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import Portfolio from "../models/Portfolio";
-import { portfoliotSchema } from "../validators/portfolio";
+
 
 export const createPortfolio = async (req: Request, res: Response) => {
   const data = await Portfolio.create(req.body);
+  if (!data) {
+    res.status(400).json({ message: "Portfolio not created" });
+    return;
+  }
   res.status(201).json({ data, message: "successfully  created portfolio" });
 };
+
 export const getAllPortfolios = async (_req: Request, res: Response) => {
   const portfolios = await Portfolio.find().sort({ createdAt: -1 });
   res.status(200).json(portfolios);

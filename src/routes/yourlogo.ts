@@ -6,13 +6,14 @@ import {
   deleteYourLogo,
 } from "../controllers/yourlogo";
 import { requireRole } from "../middlewares/auth";
-
+import { validate } from "../middlewares/validate";
+import { yourLogoSchema, updateYourLogoSchema } from "../validators/yourlogo";
 const router = Router();
 
 router.get("/", getYourLogo);
 
-router.post("/", requireRole("senior"), createYourLogo);
-router.put("/:id", requireRole("senior"), updateYourLogo);
+router.post("/", requireRole("senior"), validate(yourLogoSchema), createYourLogo);
+router.put("/:id", requireRole("senior"), validate(updateYourLogoSchema), updateYourLogo);
 router.delete("/:id", requireRole("senior"), deleteYourLogo);
 
 export default router;
@@ -100,7 +101,7 @@ export default router;
  *         description: Unauthorized - User not authenticated
  *       403:
  *         description: Forbidden - User does not have required role
- * 
+ *
  * /api/yourlogo/{id}:
  *   put:
  *     summary: Update a logo

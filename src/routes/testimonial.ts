@@ -105,15 +105,16 @@
 import { Router } from "express";
 import { createTestimonial, getTestimonials, updateTestimonial, deleteTestimonial } from "../controllers/testimonial";
 import { requireAuth, requireRole } from "../middlewares/auth";
-
+import { validate } from "../middlewares/validate";
+import { createTestimonialSchema, updateTestimonialSchema } from "../validators/testimonial";
 const router = Router();
 
 //public routes
 router.get("/", getTestimonials);
 
 //private routes
-router.post("/", requireRole("senior"), createTestimonial);
-router.put("/:id", requireRole("senior"), updateTestimonial);
+router.post("/", requireRole("senior"), validate(createTestimonialSchema), createTestimonial);
+router.put("/:id", requireRole("senior"), validate(updateTestimonialSchema), updateTestimonial);
 router.delete("/:id", requireRole("senior"), deleteTestimonial);
 
 export default router;

@@ -5,6 +5,10 @@ import Developer from "../models/developer";
 
 export const createDeveloper = async (req: Request, res: Response) => {
   const data = await Developer.create(req.body);
+  if (!data) {
+    res.status(400).json({ message: "Developer not created" });
+    return;
+  }
   res.status(201).json({ message: "Developer created successfully", data });
 };
 

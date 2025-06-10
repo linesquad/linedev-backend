@@ -3,6 +3,10 @@ import Pricing from "../models/pricing";
 
 export const createPricing = async (req: Request, res: Response) => {
   const pricing = await Pricing.create(req.body);
+  if (!pricing) {
+    res.status(400).json({ message: "Pricing not created" });
+    return;
+  }
   res.status(201).json({ message: "Pricing created successfully", pricing });
 };
 
