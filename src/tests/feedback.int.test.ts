@@ -33,7 +33,7 @@ beforeAll(async () => {
   const seniorAccount = await createTestAccount("senior");
   seniorToken = seniorAccount.accessToken;
   seniorUserId = seniorAccount.account._id.toString();
-}, 30000);
+});
 
 afterAll(async () => {
   // Clean up everything after all tests
@@ -164,7 +164,7 @@ describe("feedback functionality", () => {
       .delete(`/api/tasks/${taskId}/feedback/${feedbackId}`)
       .set("Cookie", `accessToken=${juniorToken}`);
     expect(res.status).toBe(403);
-  }, 10000);
+  });
 
   it("should not allow middle to delete feedback", async () => {
     // First add feedback
@@ -182,7 +182,7 @@ describe("feedback functionality", () => {
       .delete(`/api/tasks/${taskId}/feedback/${feedbackId}`)
       .set("Cookie", `accessToken=${middleToken}`);
     expect(res.status).toBe(403);
-  }, 10000);
+  });
 
   it("should allow senior to delete feedback", async () => {
     // First add feedback
@@ -202,7 +202,6 @@ describe("feedback functionality", () => {
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Feedback deleted successfully");
 
-    // Verify feedback is gone
     const getRes = await request(app)
       .get(`/api/tasks/${taskId}/feedback`)
       .set("Cookie", `accessToken=${seniorToken}`);
