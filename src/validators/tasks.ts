@@ -13,6 +13,19 @@ export const createTaskSchema = z.object({
       done: z.boolean().default(false),
     })
   ),
+
+  feedback: z
+    .array(
+      z.object({
+        author: z.string().min(1),
+        comment: z.string().min(1),
+      })
+    )
+    .optional(),
+});
+export const addFeedbackSchema = z.object({
+  comment: z.string().min(1),
+  author: z.string().min(1),
 });
 
 export const updateTaskSchema = createTaskSchema.partial();

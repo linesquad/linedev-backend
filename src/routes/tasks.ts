@@ -7,9 +7,18 @@ import {
   updateTask,
 } from "../controllers/tasks";
 import { validate } from "../middlewares/validate";
-import { createTaskSchema, updateTaskSchema } from "../validators/tasks";
+import {
+  addFeedbackSchema,
+  createTaskSchema,
+  updateTaskSchema,
+} from "../validators/tasks";
 import { requireAuth, requireRole } from "../middlewares/auth";
 import { Router } from "express";
+import {
+  addFeedback,
+  getFeedback,
+  deleteFeedback,
+} from "../controllers/feedback";
 
 const router = Router();
 
@@ -17,7 +26,6 @@ const router = Router();
 router.post("/", requireRole("senior"), validate(createTaskSchema), createTask);
 
 router.get("/", requireRole("junior", "middle", "senior"), getTasks);
-
 
 router.get(
   "/mine",
@@ -36,6 +44,27 @@ router.put(
 );
 
 router.delete("/:id", requireRole("senior"), deleteTask);
+
+//feedback private routes
+
+router.post(
+  "/:taskId/feedback",
+  requireRole("senior"),
+  validate(addFeedbackSchema),
+  addFeedback
+);
+
+router.get(
+  "/:taskId/feedback",
+  requireRole("senior", "junior", "middle"),
+  getFeedback
+);
+
+router.delete(
+  "/:taskId/feedback/:feedbackId",
+  requireRole("senior"),
+  deleteFeedback
+);
 
 export default router;
 
@@ -215,4 +244,121 @@ export default router;
  *         description: Unauthorized
  *       403:
  *         description: Forbidden - Only senior role can toggle subtasks
+ *
+ * /api/tasks/{taskId}/feedback:
+ *   post:
+ *     summary: Add feedback to a task
+ *     tags: [Tasks]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - comment
+ *               - author
+ *             properties:
+ *               comment:
+ *                 type: string
+ *                 description: Feedback comment text
+ *               author:
+ *                 type: string
+ *                 description: ID of the user providing feedback
+ *     responses:
+ *       200:
+ *         description: Feedback added successfully
+ *       400:
+ *         description: Invalid request - Missing taskId, comment, or author
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Only senior role can add feedback
+ *       404:
+ *         description: Task not found
+ *       500:
+ *         description: Server error while adding feedback
+ *
+ *   get:
+ *     summary: Get all feedback for a task
+ *     tags: [Tasks]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of all feedback for the task
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 feedback:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       author:
+ *                         type: string
+ *                         description: ID of the feedback author
+ *                       comment:
+ *                         type: string
+ *                         description: Feedback comment text
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *       400:
+ *         description: Invalid request - Missing taskId
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Task not found
+ *       500:
+ *         description: Server error while fetching feedback
+ *
+ * /api/tasks/{taskId}/feedback/{feedbackId}:
+ *   delete:
+ *     summary: Delete specific feedback from a task
+ *     tags: [Tasks]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: taskId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: feedbackId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Feedback deleted successfully
+ *       400:
+ *         description: Invalid request - Missing taskId or feedbackId
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Only senior role can delete feedback
+ *       404:
+ *         description: Task or feedback not found
+ *       500:
+ *         description: Server error while deleting feedback
  */

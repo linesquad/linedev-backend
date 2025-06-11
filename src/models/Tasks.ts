@@ -45,6 +45,23 @@ const taskSchema = new mongoose.Schema(
         },
       },
     ],
+    feedback: [
+      {
+        author: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Auth",
+          required: true,
+        },
+        comment: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
