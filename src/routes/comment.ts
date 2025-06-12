@@ -15,7 +15,7 @@ const router = Router();
  * tags:
  *   name: Comments
  *   description: Comment management endpoints
- * 
+ *
  * /api/comment:
  *   post:
  *     summary: Create a new comment
@@ -105,6 +105,7 @@ const router = Router();
  *       401:
  *         description: Unauthorized
  *
+ * /api/comment/{id}:
  *   patch:
  *     summary: Update a comment approval status (senior only)
  *     tags: [Comments]
@@ -112,7 +113,7 @@ const router = Router();
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
- *         name: blogId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
@@ -152,7 +153,7 @@ const router = Router();
  *       - cookieAuth: []
  *     parameters:
  *       - in: path
- *         name: blogId
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
@@ -176,11 +177,9 @@ const router = Router();
  */
 
 router.post("/", requireAuth, createComment);
-router.get("/:blogId", requireAuth, getApprovedComments);
-
-//private routes
 router.get("/", requireRole("senior"), getAllComments);
-router.patch("/:blogId", requireRole("senior"), approveComment);
-router.delete("/:blogId", requireRole("senior"), deleteComment);
+router.get("/:blogId", requireAuth, getApprovedComments);
+router.patch("/:id", requireRole("senior"), approveComment);
+router.delete("/:id", requireRole("senior"), deleteComment);
 
 export default router;
