@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import ImageKit from "imagekit";
 import authRoutes from "./routes/auth";
 import dashboardRoutes from "./routes/dashboard";
 import profileRoutes from "./routes/profile";
@@ -23,11 +24,22 @@ import categoryRoutes from "./routes/category";
 import yourLogoRoutes from "./routes/yourlogo";
 const app = express();
 
+const imagekit = new ImageKit({
+  urlEndpoint: 'https://ik.imagekit.io/cm4yjrvzz',
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!
+});
+
 app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.get('/auth/imagekit', function (req, res) {
+  const { token, expire, signature } = imagekit.getAuthenticationParameters();
+  res.send({ token, expire, signature, publicKey: process.env.IMAGEKIT_PUBLIC_KEY });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
