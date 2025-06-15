@@ -29,7 +29,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await mongoose.connection.dropDatabase();
+  //  ამის არასწორი  პირშიც!!!!
+
+  // await mongoose.connection.dropDatabase();
+  await mongoose.connection.collection("auths").deleteOne({
+    email: { $regex: /john/i },
+  });
   await mongoose.connection.close();
 });
 

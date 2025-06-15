@@ -29,7 +29,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/client", clientRoutes);
@@ -50,6 +49,7 @@ app.use("/api/portfolio-categories", categoryRoutes);
 app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
 app.use("/api/yourlogo", yourLogoRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use("/api/reviews", reviewRoutes);
 export default app;

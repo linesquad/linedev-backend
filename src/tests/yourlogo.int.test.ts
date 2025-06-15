@@ -1,1 +1,0 @@
-// TODO: Add yourlogo tests

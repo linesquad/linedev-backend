@@ -16,6 +16,34 @@ const addIsOverdueToTask = (task: {
   };
 };
 
+export const createTask = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const {
+      title,
+      description,
+      status,
+      priority,
+      dueDate,
+      assignedTo,
+      subtasks = [],
+    } = req.body;
+    const task = await Task.create({
+      title,
+      description,
+      status,
+      priority,
+      dueDate,
+      assignedTo,
+      subtasks,
+    });
+    res.status(201).json({ message: "Task created successfully", task });
+  } catch (error) {
+    res.status(400).json({ message: "Error creating task", error });
+  }
+};
 export const getTasks = async (req: Request, res: Response) => {
   const tasks = await Task.find().sort({ createdAt: -1, priority: 1 });
   const tasksWithOverdue = tasks.map((task) => addIsOverdueToTask(task));
@@ -50,46 +78,6 @@ export const getTaskById = async (req: Request, res: Response) => {
   res
     .status(200)
     .json({ message: "Task fetched successfully", task: taskWithOverdue });
-};
-
-export const deleteTask = async (req: Request, res: Response) => {
-  const deletedTask = await Task.findByIdAndDelete(req.params.id);
-  if (!deletedTask) {
-    res.status(404).json({ message: "Task not found" });
-    return;
-  }
-  const taskWithOverdue = addIsOverdueToTask(deletedTask);
-  res
-    .status(200)
-    .json({ message: "Task deleted successfully", task: taskWithOverdue });
-};
-export const createTask = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const {
-      title,
-      description,
-      status,
-      priority,
-      dueDate,
-      assignedTo,
-      subtasks = [],
-    } = req.body;
-    const task = await Task.create({
-      title,
-      description,
-      status,
-      priority,
-      dueDate,
-      assignedTo,
-      subtasks,
-    });
-    res.status(201).json({ message: "Task created successfully", task });
-  } catch (error) {
-    res.status(400).json({ message: "Error creating task", error });
-  }
 };
 
 export const updateTask = async (
@@ -134,3 +122,17 @@ export const updateTask = async (
     res.status(400).json({ message: "Error updating task", error });
   }
 };
+
+export const deleteTask = async (req: Request, res: Response) => {
+  const deletedTask = await Task.findByIdAndDelete(req.params.id);
+  if (!deletedTask) {
+    res.status(404).json({ message: "Task not found" });
+    return;
+  }
+  const taskWithOverdue = addIsOverdueToTask(deletedTask);
+  res
+    .status(200)
+    .json({ message: "Task deleted successfully", task: taskWithOverdue });
+};
+
+
