@@ -11,12 +11,19 @@ interface BlogFilters {
 }
 
 export const createBlog = async (req: Request, res: Response) => {
-  const data = await Blog.create(req.body);
-
-  res.status(201).json({
-    message: "Blog created successfully",
-    data,
-  });
+  try {
+    const data = await Blog.create(req.body);
+    console.log(data);
+    if (!data) {
+      throw new Error();
+    }
+    res.status(201).json({
+      message: "Blog created successfully",
+      data,
+    });
+  } catch (error) {
+    res.status(400).json({ message: "Error creating Blog", error });
+  }
 };
 
 export const getAllBlogs = async (req: Request, res: Response) => {
@@ -41,7 +48,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     page: Number(page),
     totalPages: Math.ceil(total / Number(limit)),
     hasNextPage: Number(page) < Math.ceil(total / Number(limit)),
-    hasPreviousPage: Number(page) > 1
+    hasPreviousPage: Number(page) > 1,
   });
 };
 

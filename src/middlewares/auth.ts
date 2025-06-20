@@ -22,14 +22,12 @@ export const requireRole = (...roles: string[]) => {
         return;
       }
       if (!roles.includes(user.role)) {
-        res
-          .status(403)
-          .json({
-            message: `Forbidden: ${user.role} is not allowed to access this resource`,
-          });
+        res.status(403).json({
+          message: `Forbidden: ${user.role} is not allowed to access this resource`,
+        });
         return;
       }
-      
+
       next();
     } catch (error) {
       res.status(401).json({ message: "Unauthorized" });
@@ -54,7 +52,15 @@ export const requireAuth = async (
       accessToken,
       process.env.ACCESS_TOKEN_SECRET!
     ) as JWTPayload;
-    req.user = decoded.id;
+
+    // მოიძიე მომხმარებელი ბაზიდან ID-ის მიხედვით
+    const user = await Auth.findById(decoded.id);
+    if (!user) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    req.user = user;
     next();
   } catch (error) {
     res.status(401).json({ message: "Unauthorized" });

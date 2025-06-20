@@ -71,3 +71,11 @@ const taskSchema = new mongoose.Schema(
 const Task = mongoose.model("Task", taskSchema);
 
 export default Task;
+
+
+  // title: "Test Task",
+  //       description: "This is a test task",
+  //       status: "todo",
+  //       priority: 1,
+  //       dueDate: new Date(Date.now() + 86400000),
+  //       assignedTo: userId,
