@@ -55,11 +55,11 @@ describe("Task API", () => {
       .send({
         title: "Test Task",
         description: "This is a test task",
-        status: "pending", // სწორი მნიშვნელობა ზოდ-ს enum-იდან
-        priority: "medium", // enum-ის string მნიშვნელობა
-        dueDate: new Date(Date.now() + 86400000).toISOString(), // Date უნდა იყოს string ფორმატში (ISO string)
+        status: "pending",
+        priority: "medium",
+        dueDate: new Date(Date.now() + 86400000).toISOString(),
         assignedTo: userId,
-        subtasks: [], // სქემა მოითხოვს subtasks-ს, ამიტომ უნდა იყოს მინიმუმ ცარიელი მასივი
+        subtasks: [],
       });
 
     expect(res.status).toBe(201);
@@ -82,8 +82,6 @@ describe("Task API", () => {
     const res = await request(app)
       .get("/api/tasks/mine")
       .set("Cookie", [`accessToken=${accessToken}`]);
-
-    console.log("MY TASKS RESPONSE:", res.status, res.body);
 
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Your tasks fetched successfully");

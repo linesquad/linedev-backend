@@ -16,7 +16,7 @@ export const getCategories = async (req: Request, res: Response) => {
 };
 
 export const getCategoryPortfolios = async (req: Request, res: Response) => {
-  const { category } = req.query;
+  const { category } = req.params;
 
   if (!category) {
     res.status(400).json({ message: "Category slug is required" });

@@ -22,7 +22,7 @@ import {
 
 const router = Router();
 
-//private routes
+
 router.post("/", requireRole("senior"), validate(createTaskSchema), createTask);
 
 router.get("/", requireRole("junior", "middle", "senior"), getTasks);
