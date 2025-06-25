@@ -80,6 +80,7 @@ describe("Pricing API", () => {
 
   it("should return 404 for non-existing pricing update", async () => {
     const response = await request(app)
+      //არარსებული (invalid ან fake) _id-ს ტესტირებისთვის
       .put(`/api/pricing/000000000000000000000000`)
       .set("Cookie", [`accessToken=${token}`])
       .send({
