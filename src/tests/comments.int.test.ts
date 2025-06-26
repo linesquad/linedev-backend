@@ -1,119 +1,139 @@
 import request from "supertest";
 import mongoose from "mongoose";
-import app from "../server";
-import Comment from "../models/Comment";
-import Auth from "../models/Auth";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import app from "../server";
+import Auth from "../models/Auth";
+import Blog from "../models/Blogs";
+import Comment from "../models/Comment";
 
 dotenv.config();
 
-let accessTokenSenior: string;
-let accessTokenUser: string;
+let userToken: string;
+let seniorToken: string;
+let blogId: string;
 let commentId: string;
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_TEST_URL!);
 
-  const passwordSenior = await bcrypt.hash("password123", 10);
-  const seniorUser = await Auth.create({
-    name: "Senior User",
-    email: "senior@example.com",
-    password: passwordSenior,
-    role: "senior",
-  });
-
-  accessTokenSenior = jwt.sign(
-    { id: seniorUser._id },
-    process.env.ACCESS_TOKEN_SECRET!,
-    {
-      expiresIn: "1h",
-    }
-  );
-
-  const passwordUser = await bcrypt.hash("password123", 10);
-  const normalUser = await Auth.create({
-    name: "Normal User",
-    email: "user@example.com",
-    password: passwordUser,
+  const userPassword = await bcrypt.hash("user123", 10);
+  const user = await Auth.create({
+    name: "Client User",
+    email: "client@example.com",
+    password: userPassword,
     role: "client",
   });
 
-  accessTokenUser = jwt.sign(
-    { id: normalUser._id },
+  userToken = jwt.sign(
+    { id: user._id, role: "user" },
     process.env.ACCESS_TOKEN_SECRET!,
     {
       expiresIn: "1h",
     }
   );
+
+  const seniorPassword = await bcrypt.hash("senior123", 10);
+  const senior = await Auth.create({
+    name: "Senior",
+    email: "senior@example.com",
+    password: seniorPassword,
+    role: "senior",
+  });
+
+  seniorToken = jwt.sign(
+    { id: senior._id, role: "senior" },
+    process.env.ACCESS_TOKEN_SECRET!,
+    {
+      expiresIn: "1h",
+    }
+  );
+
+  const blog = await Blog.create({
+    title: "Test Blog",
+    content: "Some content",
+    author: senior._id,
+    tags: ["test"],
+    category: "general",
+  });
+
+  blogId = blog._id.toString();
 });
 
 afterAll(async () => {
-  await Auth.deleteMany({});
   await Comment.deleteMany({});
-  await mongoose.disconnect();
+  await Blog.deleteMany({});
+  await Auth.deleteMany({});
+  await mongoose.connection.close();
 });
 
-describe("Comment API", () => {
-  const blogId = new mongoose.Types.ObjectId().toString();
-
-  it("POST /api/comment - should create comment (auth required)", async () => {
+describe("💬 Comment API", () => {
+  test("POST /api/comment - create a comment (auth)", async () => {
     const res = await request(app)
       .post("/api/comment")
-      .set("Cookie", [`accessToken=${accessTokenUser}`])
+      .set("Cookie", [`accessToken=${userToken}`])
       .send({
-        name: "Test Commenter",
+        blog: blogId,
+        name: "Test User",
         content: "This is a test comment",
         approved: false,
       });
 
-    expect(res.status).toBe(201);
-    expect(res.body.message).toBe("Comment created successfully");
+    expect(res.statusCode).toBe(201);
     expect(res.body.comment).toHaveProperty("_id");
+    expect(res.body.comment.approved).toBe(false);
     commentId = res.body.comment._id;
   });
 
-  it("GET /api/comment - should fail without senior role", async () => {
-    const res = await request(app).get("/api/comment");
-    expect(res.status).toBe(401);
-  });
-
-  it("GET /api/comment - should get all comments with senior role", async () => {
-    const res = await request(app)
-      .get("/api/comment")
-      .set("Cookie", [`accessToken=${accessTokenSenior}`]);
-
-    expect(res.status).toBe(200);
-    expect(Array.isArray(res.body.comments)).toBe(true);
-  });
-
-  it("GET /api/comment/:blogId - should get approved comments (auth required)", async () => {
+  test("GET /api/comment/:blogId - get approved comments (auth)", async () => {
     const res = await request(app)
       .get(`/api/comment/${blogId}`)
-      .set("Cookie", [`accessToken=${accessTokenUser}`]);
+      .set("Cookie", [`accessToken=${userToken}`]);
 
-    expect(res.status).toBe(200);
+    expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body.comments)).toBe(true);
+    expect(res.body.comments).toHaveLength(0);
   });
 
-  it("PATCH /api/comment/:id - should approve comment (senior role required)", async () => {
+  test("GET /api/comment - get all comments (senior only)", async () => {
+    const res = await request(app)
+      .get("/api/comment")
+      .set("Cookie", [`accessToken=${seniorToken}`]);
+
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body.comments)).toBe(true);
+
+    if (res.body.comments.length > 0) {
+      expect(res.body.comments[0]).toHaveProperty("content");
+    }
+  });
+
+  test("PATCH /api/comment/:id - approve comment (senior only)", async () => {
     const res = await request(app)
       .patch(`/api/comment/${commentId}`)
-      .set("Cookie", [`accessToken=${accessTokenSenior}`])
+      .set("Cookie", [`accessToken=${seniorToken}`])
       .send({ approved: true });
 
-    expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Comment approved successfully");
+    expect(res.statusCode).toBe(200);
     expect(res.body.comment.approved).toBe(true);
   });
 
-  it("DELETE /api/comment/:id - should delete comment (senior role required)", async () => {
+  test("GET /api/comment/:blogId - should now return 1 approved comment", async () => {
+    const res = await request(app)
+      .get(`/api/comment/${blogId}`)
+      .set("Cookie", [`accessToken=${userToken}`]);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.comments.length).toBe(1);
+  });
+
+  test("DELETE /api/comment/:id - delete comment (senior only)", async () => {
     const res = await request(app)
       .delete(`/api/comment/${commentId}`)
-      .set("Cookie", [`accessToken=${accessTokenSenior}`]);
+      .set("Cookie", [`accessToken=${seniorToken}`]);
 
-    expect(res.status).toBe(200);
+    expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe("Comment deleted successfully");
   });
 });

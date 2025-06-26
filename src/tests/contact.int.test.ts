@@ -15,7 +15,6 @@ let contactId: string;
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_TEST_URL!);
 
-  // Create a senior user and generate token
   const hashedPassword = await bcrypt.hash("password123", 10);
   const user = await Auth.create({
     name: "Senior User",
