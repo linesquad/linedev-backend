@@ -47,8 +47,6 @@ app.use("/api/portfolio", PortfolioRoute);
 app.use("/api/comment", commentRoutes);
 app.use("/api/leaderboard", leaderboard);
 app.use("/api/portfolio-categories", categoryRoutes);
-app.use("/api/portfolio", PortfolioRoute);
-app.use("/api/comment", commentRoutes);
 app.use("/api/yourlogo", yourLogoRoutes);
 
 app.use("/api/reviews", reviewRoutes);

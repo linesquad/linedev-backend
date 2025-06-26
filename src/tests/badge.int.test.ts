@@ -1,95 +1,127 @@
 import request from "supertest";
 import mongoose from "mongoose";
-import app from "../server"; // შენი express აპი
-import Auth from "../models/Auth";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import app from "../server";
+import Auth from "../models/Auth";
 
 dotenv.config();
 
-let token: string;
+let seniorToken: string;
 let userId: string;
+let unusedId: string;
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_TEST_URL!);
 
-  // შექმენი ტესტი მომხმარებელი
+  const hashed = await bcrypt.hash("test1234", 10);
+
   const user = await Auth.create({
-    name: "Badge Tester",
-    email: "badge.tester@example.com",
-    password: "hashedpassword",
+    name: "Skillful Dev",
+    email: "dev@example.com",
+    password: hashed,
+    role: "junior",
+    skills: ["JavaScript"],
     badges: [],
+  });
+  userId = user._id.toString();
+  unusedId = new mongoose.Types.ObjectId().toString();
+
+  // Create a senior user and token
+  const senior = await Auth.create({
+    name: "Senior Admin",
+    email: "admin@example.com",
+    password: hashed,
     role: "senior",
   });
 
-  userId = user._id.toString();
-
-  // გენერირება JWT ტოკენის
-  token = jwt.sign(
-    { id: userId, role: "senior" },
-    process.env.ACCESS_TOKEN_SECRET || "secret",
-    { expiresIn: "1h" }
-  );
+  seniorToken = jwt.sign({ id: senior._id }, process.env.ACCESS_TOKEN_SECRET!, {
+    expiresIn: "1h",
+  });
 });
 
 afterAll(async () => {
-  await Auth.deleteMany({ email: "badge.tester@example.com" });
-  await mongoose.disconnect();
+  await Auth.deleteMany();
+  await mongoose.connection.close();
 });
 
-describe("PATCH /:id/badges", () => {
-  it("should add a new badge", async () => {
+describe("Badge and Skills API", () => {
+  it("should update user skills (merge + deduplicate)", async () => {
     const res = await request(app)
-      .patch(`/api/users/${userId}/badges`)
-      .set("Authorization", `Bearer ${token}`)
+      .patch(`/api/users/${userId}/skills`)
+      .set("Cookie", [`accessToken=${seniorToken}`])
       .send({
-        title: "Top Contributor",
-        description: "Awarded for contributing a lot",
-        iconUrl: "https://example.com/icon.png",
+        skills: ["TypeScript", "JavaScript"],
       });
 
     expect(res.status).toBe(200);
-    expect(
-      res.body.auth.badges.some((b: any) => b.title === "Top Contributor")
-    ).toBe(true);
+    expect(res.body.auth.skills).toEqual(
+      expect.arrayContaining(["JavaScript", "TypeScript"])
+    );
   });
 
-  it("should not add duplicate badge", async () => {
-    // თავდაპირველად დავამატოთ badge
-    await request(app)
-      .patch(`/api/users/${userId}/badges`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        title: "Duplicate Badge",
-        description: "desc",
-        iconUrl: "https://example.com/icon.png",
-      });
-
-    // მეორედ იგივე სათაური არ უნდა დაუმატოს
+  it("should add a new badge", async () => {
     const res = await request(app)
       .patch(`/api/users/${userId}/badges`)
-      .set("Authorization", `Bearer ${token}`)
+      .set("Cookie", [`accessToken=${seniorToken}`])
       .send({
-        title: "Duplicate Badge",
-        description: "desc2",
-        iconUrl: "https://example.com/icon2.png",
+        title: "Code Hero",
+        description: "Completed 100 tasks",
+        iconUrl: "https://example.com/badge1.svg",
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.auth.badges.length).toBe(1);
+    expect(res.body.auth.badges[0].title).toBe("Code Hero");
+  });
+
+  it("should not allow adding duplicate badge title", async () => {
+    const res = await request(app)
+      .patch(`/api/users/${userId}/badges`)
+      .set("Cookie", [`accessToken=${seniorToken}`])
+      .send({
+        title: "Code Hero",
+        description: "Another award",
+        iconUrl: "https://example.com/badge2.svg",
       });
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("Badge already exists");
   });
 
-  it("should return 404 if user not found", async () => {
-    const invalidId = new mongoose.Types.ObjectId().toString();
+  it("should return 404 when updating skills of non-existing user", async () => {
     const res = await request(app)
-      .patch(`/api/users/${invalidId}/badges`)
-      .set("Authorization", `Bearer ${token}`)
+      .patch(`/api/users/${unusedId}/skills`)
+      .set("Cookie", [`accessToken=${seniorToken}`])
+      .send({ skills: ["Docker"] });
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe("User not found");
+  });
+
+  it("should return 404 when adding badge to non-existing user", async () => {
+    const res = await request(app)
+      .patch(`/api/users/${unusedId}/badges`)
+      .set("Cookie", [`accessToken=${seniorToken}`])
       .send({
-        title: "Nonexistent User Badge",
-        description: "desc",
-        iconUrl: "https://example.com/icon.png",
+        title: "Legend",
+        description: "Never seen",
+        iconUrl: "https://example.com/legend.svg",
       });
 
     expect(res.status).toBe(404);
+    expect(res.body.message).toBe("User not found");
+  });
+
+  it("should reject access if not authenticated", async () => {
+    const res = await request(app)
+      .patch(`/api/users/${userId}/skills`)
+      .send({
+        skills: ["Unauthorized Skill"],
+      });
+
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe("Unauthorized");
   });
 });
